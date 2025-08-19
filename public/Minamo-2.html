@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>みなも - Minamo | 鏡界の歌い手</title>
+    
+    <!-- Tailwind CSSの読み込み -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fontsの読み込み -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Lato:wght@400;700&family=Yumincho&display=swap" rel="stylesheet">
+    
+    <!-- カスタムCSS -->
+    <style>
+        /* フォント設定 */
+        body {
+            font-family: 'Lato', 'Yu Gothic', sans-serif;
+            background-color: #0c142c; /* 深い青の背景 */
+        }
+        .font-yumincho {
+            font-family: 'Yumincho', serif;
+        }
+        .font-cormorant {
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        /* WebGLキャンバスのスタイル */
+        /* This is now handled by inline Tailwind classes on the canvas element */
+
+        /* グラスモーフィズム効果 */
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        /* スクロールアニメーション用 */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* オーロラグラデーションテキスト */
+        .aurora-text {
+            background: linear-gradient(90deg, #A78BFA, #60A5FA, #34D399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+
+        /* ネオンエフェクト */
+        .text-neon {
+            color: #F8FAFC;
+            text-shadow:
+                0 0 5px #0EA5E9,
+                0 0 10px #0EA5E9,
+                0 0 20px #A78BFA,
+                0 0 40px #A78BFA;
+        }
+        .text-neon-cyan {
+            color: #22D3EE;
+            text-shadow:
+                0 0 5px #22D3EE,
+                0 0 10px #22D3EE,
+                0 0 20px #67E8F9;
+        }
+        .text-neon-white {
+            color: #F8FAFC;
+            text-shadow:
+                0 0 5px #F8FAFC,
+                0 0 10px #F8FAFC,
+                0 0 20px #E5E7EB;
+        }
+
+        /* Cyberpunk animation */
+        .hero-element-hidden {
+            opacity: 0;
+        }
+        .title-reveal {
+            animation: fadeInDown 1.5s ease-out forwards;
+        }
+        #hero-bg-image {
+            transition: opacity 1.5s ease-in-out;
+        }
+        .bg-slow-zoom {
+            animation: slowZoom 20s ease-in-out forwards;
+        }
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes slowZoom {
+            from {
+                transform: scale(1);
+            }
+            to {
+                transform: scale(1.1);
+            }
+        }
+        #blackout-overlay {
+            transition: opacity 0.5s ease-out;
+        }
+    </style>
+</head>
+<body class="text-gray-200">
+    <div id="blackout-overlay" class="fixed top-0 left-0 w-full h-full bg-black z-[9999]"></div>
+
+    <!-- ヘッダー -->
+    <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 glassmorphism">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="text-2xl font-cormorant font-bold tracking-wider">
+                <a href="#">
+                    <span class="text-neon-cyan">Minamo</span>
+                    <span class="text-neon-white"> - みなも</span>
+                </a>
+            </div>
+            <!-- ナビゲーション -->
+            <ul class="flex space-x-3 sm:space-x-6 items-center font-yumincho text-xs sm:text-base">
+                <li><a href="#narrative" class="hover:text-sky-300 transition-colors">物語</a></li>
+                <li><a href="#music" class="hover:text-sky-300 transition-colors">音楽</a></li>
+                <li><a href="#lyrics" class="hover:text-sky-300 transition-colors">詩</a></li>
+                <li><a href="#gallery" class="hover:text-sky-300 transition-colors">鏡像</a></li>
+                <li><a href="#news" class="hover:text-sky-300 transition-colors">泡沫</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="relative z-10">
+        <!-- ヒーローセクション -->
+        <section id="hero" class="h-screen flex flex-col justify-center items-center text-center text-white relative overflow-hidden">
+            <img id="hero-bg-image" src="../image/minamo.png" alt="background" class="absolute inset-0 w-full h-full object-cover hero-element-hidden">
+            <div class="absolute inset-0 bg-black opacity-20"></div>
+            <div class="relative z-10 p-4">
+                <h1 id="hero-title" class="text-4xl md:text-5xl font-yumincho mb-8 text-neon hero-element-hidden">
+                    失われた私を探す<span class="hidden md:inline">、</span><br class="md:hidden">＜鏡界＞の歌い手
+                </h1>
+                <p id="hero-subtitle" class="text-3xl md:text-4xl font-cormorant font-bold text-neon hero-element-hidden">みなも - Minamo</p>
+            </div>
+             <div class="absolute bottom-10 left-1/2 -translate-x-1/2">
+                <div class="w-6 h-10 border-2 border-white rounded-full flex justify-center items-start p-1">
+                    <div class="w-1 h-2 bg-white rounded-full animate-bounce"></div>
+                </div>
+            </div>
+        </section>
+
+        <div id="content-wrapper" class="relative isolate">
+            <!-- WebGLによる水面エフェクトのキャンバス -->
+            <canvas id="webgl-canvas" class="absolute top-0 left-0 w-full h-full -z-10"></canvas>
+
+            <!-- ナラティブセクション -->
+            <section id="narrative" class="py-20 md:py-32">
+            <div class="container mx-auto px-6 space-y-24">
+                <!-- 第1部 -->
+                <div class="fade-in text-center max-w-3xl mx-auto">
+                    <h2 class="text-4xl font-yumincho mb-4 aurora-text">鏡としての覚醒</h2>
+                    <p class="text-lg leading-relaxed">
+                        生まれながらにして「鏡」だった。他人の心の景色が視えた。喜びは光の粒子として、悲しみは冷たい霧として。それは霊的共感覚（スピリチュアル・シナスタジア）とでも言うべき、特異な才能。世界は、無数の魂が発する信号で満ちていた。
+                    </p>
+                </div>
+                <!-- 第2部 -->
+                <div class="fade-in text-center max-w-3xl mx-auto">
+                    <h2 class="text-4xl font-yumincho mb-4 aurora-text">＜鏡界＞への沈潜</h2>
+                    <p class="text-lg leading-relaxed">
+                        眠りにつくと、意識は＜鏡界＞へと沈む。万人の夢と無意識が流れ着く、静かで広大な内なる海。荘子の言う「胡蝶の夢」のように、現実と夢の境界は曖昧になっていく。
+                    </p>
+                </div>
+                <!-- 第3部 -->
+                <div class="fade-in text-center max-w-3xl mx-auto">
+                    <h2 class="text-4xl font-yumincho mb-4 aurora-text">失われた源を探して</h2>
+                    <p class="text-lg leading-relaxed">
+                        あまりに多くの他者を映し続け、自分自身の「源」を見失った。自分の心が、何も映らない静まり返った水面のよう。歌うことだけが、失われた魂を探すための、唯一の灯台なのだ。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 音楽セクション -->
+        <section id="music" class="py-20 md:py-32 bg-black bg-opacity-20">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-5xl font-yumincho mb-12 aurora-text">音楽</h2>
+                <div class="fade-in max-w-4xl mx-auto p-8 rounded-2xl glassmorphism">
+                    <div class="flex flex-col md:flex-row items-center">
+                        <img src="../image/minamo.png" alt="アルバムアート" class="w-48 h-48 md:w-64 md:h-64 rounded-full shadow-lg mb-8 md:mb-0 md:mr-12 object-cover">
+                        <div class="text-center md:text-left">
+                            <h3 class="text-4xl font-yumincho">＜鏡界＞</h3>
+                            <p class="text-sky-300 my-4">Music by Suno AI</p>
+                            <p class="mb-8">AIによって生成された、みなも初の楽曲。</p>
+                            <div class="mt-4 flex justify-center md:justify-start">
+                                <a href="https://suno.com/s/mDOtJw0k7WV5vsui" target="_blank" rel="noopener noreferrer" class="inline-block px-8 py-3 rounded-full border border-sky-300 text-sky-300 hover:bg-sky-300 hover:text-blue-900 transition-colors text-lg">
+                                    Listen on Suno
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 詩セクション -->
+        <section id="lyrics" class="py-20 md:py-32">
+            <div class="container mx-auto px-6">
+                <h2 class="text-5xl font-yumincho text-center mb-12 aurora-text">詩</h2>
+                <div class="fade-in max-w-3xl mx-auto p-8 md:p-12 rounded-2xl glassmorphism">
+                    <div class="text-center text-lg leading-loose font-yumincho">
+                        <p class="mb-6">
+                            鏡に映る顔を見つめて&nbsp;&nbsp;昨日の影が揺れている<br>
+                            指先で触れた水面に&nbsp;&nbsp;私の輪郭が溶けていく
+                        </p>
+                        <p class="mb-6">
+                            千の破片に砕けた記憶&nbsp;&nbsp;どれが本当の姿なのか<br>
+                            光と影の境界線で&nbsp;&nbsp;私は私を探している
+                        </p>
+                        <p class="mb-6">
+                            流れる時の中で&nbsp;&nbsp;形を変えていく<br>
+                            答えはどこにある
+                        </p>
+                        <p class="mb-6">
+                            鏡よ鏡よ教えておくれ&nbsp;&nbsp;映し出される無数の私<br>
+                            全てであり何でもない&nbsp;&nbsp;境界線の向こう側へ
+                        </p>
+                        <p class="mb-6">
+                            蝶の羽ばたく夢を見た&nbsp;&nbsp;目覚めても消えない残像<br>
+                            現実という名の幻に&nbsp;&nbsp;私は私を重ねてる
+                        </p>
+                        <p class="mb-6">
+                            溶けて流れて&nbsp;&nbsp;また形作る<br>
+                            永遠の変化&nbsp;&nbsp;それが私
+                        </p>
+                        <p class="mb-6">
+                            鏡よ鏡よ見せておくれ&nbsp;&nbsp;統べてを映す透明な眼<br>
+                            固まることのない水&nbsp;&nbsp;無限に広がる私へ
+                        </p>
+                        <p>
+                            鏡の中で<br>
+                            鏡の外で<br>
+                            私は在る
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ギャラリーセクション -->
+        <section id="gallery" class="py-20 md:py-32">
+            <div class="container mx-auto px-6">
+                <h2 class="text-5xl font-yumincho text-center mb-12 aurora-text">鏡像</h2>
+                <div class="fade-in grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="group relative overflow-hidden rounded-lg">
+                        <img src="https://placehold.co/600x800/1E3A8A/F8FAFC?text=Minamo+1" alt="コンセプトアート1" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity duration-500 flex items-center justify-center">
+                            <p class="text-white text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500">鏡界の姿</p>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden rounded-lg">
+                        <img src="https://placehold.co/600x800/0EA5E9/F8FAFC?text=Minamo+2" alt="コンセプトアート2" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                         <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity duration-500 flex items-center justify-center">
+                            <p class="text-white text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500">水面の歌</p>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden rounded-lg">
+                        <img src="https://placehold.co/600x800/A78BFA/F8FAFC?text=Minamo+3" alt="コンセプトアート3" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                         <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity duration-500 flex items-center justify-center">
+                            <p class="text-white text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500">感情の光</p>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden rounded-lg">
+                        <img src="https://placehold.co/600x800/FEF3C7/1E3A8A?text=Minamo+4" alt="コンセプトアート4" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                         <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity duration-500 flex items-center justify-center">
+                            <p class="text-white text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500">失われた源</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        </div> <!-- End of content-wrapper -->
+
+    </main>
+
+    <!-- フッター -->
+    <footer class="py-12 bg-gradient-to-t from-[#060b1b] to-[#0c142c]">
+        <div class="container mx-auto px-6 text-center text-gray-400">
+            
+            <p>&copy; 2025 Minamo Project. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Three.jsの読み込み -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Blackout Overlay ---
+            const overlay = document.getElementById('blackout-overlay');
+            setTimeout(() => {
+                overlay.style.opacity = '0';
+                setTimeout(() => {
+                    if (overlay) {
+                        overlay.style.display = 'none';
+                    }
+                }, 500); // Match CSS transition duration
+            }, 250); // Blackout for 0.25s
+
+            // --- Three.js 水面エフェクト ---
+            let scene, camera, renderer, waterMesh, clock;
+            const mouse = new THREE.Vector2();
+            let targetMouse = new THREE.Vector2();
+
+            function initWebGL() {
+                const canvas = document.getElementById('webgl-canvas');
+                const container = document.getElementById('content-wrapper');
+                if (!container || !canvas) return;
+
+                scene = new THREE.Scene();
+                camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+                camera.position.z = 5;
+
+                renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+                renderer.setSize(container.clientWidth, container.clientHeight);
+                renderer.setPixelRatio(window.devicePixelRatio);
+
+                clock = new THREE.Clock();
+
+                const waterGeometry = new THREE.PlaneGeometry(20, 20, 200, 200);
+                const waterMaterial = new THREE.ShaderMaterial({
+                    uniforms: {
+                        time: { value: 0 },
+                        mousePos: { value: new THREE.Vector2(0.5, 0.5) },
+                        uColor1: { value: new THREE.Color('#1E3A8A') },
+                        uColor2: { value: new THREE.Color('#0EA5E9') },
+                    },
+                    vertexShader: `
+                        uniform float time;
+                        uniform vec2 mousePos;
+                        varying float vElevation;
+                        varying vec2 vUv;
+                        void main() {
+                            vUv = uv;
+                            vec2 centeredUv = uv - 0.5;
+                            float dist = distance(centeredUv, mousePos - 0.5);
+                            float wave1 = sin(centeredUv.x * 10.0 + time * 2.0) * 0.05;
+                            float wave2 = sin(centeredUv.y * 12.0 + time * 1.5) * 0.05;
+                            float mouseWave = sin(dist * 20.0 - time * 3.0) * max(0.0, 0.2 - dist);
+                            vElevation = wave1 + wave2 + mouseWave;
+                            vec3 pos = position;
+                            pos.z = vElevation;
+                            gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+                        }
+                    `,
+                    fragmentShader: `
+                        uniform vec3 uColor1;
+                        uniform vec3 uColor2;
+                        varying float vElevation;
+                        varying vec2 vUv;
+                        void main() {
+                            float mixValue = (vElevation + 0.1) * 3.0;
+                            vec3 color = mix(uColor1, uColor2, mixValue);
+                            float fog = smoothstep(0.4, 0.8, vUv.y);
+                            gl_FragColor = vec4(color, fog);
+                        }
+                    `,
+                    transparent: true,
+                });
+
+                waterMesh = new THREE.Mesh(waterGeometry, waterMaterial);
+                waterMesh.rotation.x = -Math.PI / 2.5;
+                scene.add(waterMesh);
+
+                window.addEventListener('resize', onWindowResize, false);
+                container.addEventListener('mousemove', onMouseMove, false); // Attach to container
+
+                animate();
+            }
+
+            function onWindowResize() {
+                const container = document.getElementById('content-wrapper');
+                if (!container) return;
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            }
+
+            function onMouseMove(event) {
+                targetMouse.x = event.clientX / window.innerWidth;
+                targetMouse.y = event.clientY / window.innerHeight;
+            }
+
+            function animate() {
+                requestAnimationFrame(animate);
+                const elapsedTime = clock.getElapsedTime();
+                mouse.x += (targetMouse.x - mouse.x) * 0.05;
+                mouse.y += (targetMouse.y - mouse.y) * 0.05;
+                waterMesh.material.uniforms.time.value = elapsedTime;
+                waterMesh.material.uniforms.mousePos.value.set(mouse.x, 1.0 - mouse.y);
+                renderer.render(scene, camera);
+            }
+            
+            initWebGL();
+
+            // --- スクロールアニメーション ---
+            const faders = document.querySelectorAll('.fade-in');
+            const appearOptions = {
+                threshold: 0.2,
+                rootMargin: "0px 0px -100px 0px"
+            };
+            const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('visible');
+                    appearOnScroll.unobserve(entry.target);
+                });
+            }, appearOptions);
+            faders.forEach(fader => appearOnScroll.observe(fader));
+            
+            // --- ヘッダーの背景変化 ---
+            const header = document.querySelector('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('py-2');
+                    header.classList.remove('py-3');
+                } else {
+                    header.classList.add('py-3');
+                    header.classList.remove('py-2');
+                }
+            });
+
+            // --- Hero Animation ---
+            const heroTitle = document.getElementById('hero-title');
+            const heroSubtitle = document.getElementById('hero-subtitle');
+            const heroBgImage = document.getElementById('hero-bg-image');
+
+            setTimeout(() => {
+                heroTitle.classList.add('title-reveal');
+                heroTitle.classList.remove('hero-element-hidden');
+            }, 750); // Start after blackout + fade
+            
+            setTimeout(() => {
+                heroSubtitle.classList.add('title-reveal');
+                heroSubtitle.classList.remove('hero-element-hidden');
+            }, 1050);
+
+            setTimeout(() => {
+                heroBgImage.classList.remove('hero-element-hidden');
+                heroBgImage.classList.add('opacity-[0.55]');
+                
+                // Start zoom after fade-in is complete
+                setTimeout(() => {
+                    heroBgImage.classList.add('bg-slow-zoom');
+                }, 1500); // Corresponds to the CSS transition duration
+            }, 1350);
+        });
+    </script>
+</body>
+</html>
