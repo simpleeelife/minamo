@@ -5,17 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>みなも - Minamo | 鏡界の歌い手</title>
     
-    <!-- Tailwind CSSの読み込み -->
+    <!-- OGP Tags -->
+    <meta property="og:title" content="みなも - Minamo | 鏡界の歌い手">
+    <meta property="og:description" content="失われた私を探す、＜鏡界＞の歌い手。他人の心の景色が視える特異な才能を持つ歌い手の物語。">
+    <meta property="og:image" content="https://minamo-website.vercel.app/image/minamo.png">
+    <meta property="og:url" content="https://minamo-website.vercel.app/">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ja_JP">
+    <meta property="og:site_name" content="みなも - Minamo">
+    
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="みなも - Minamo | 鏡界の歌い手">
+    <meta name="twitter:description" content="失われた私を探す、＜鏡界＞の歌い手。他人の心の景色が視える特異な才能を持つ歌い手の物語。">
+    <meta name="twitter:image" content="https://minamo-website.vercel.app/image/minamo.png">
+    
+    <!-- Additional Meta Tags -->
+    <meta name="description" content="失われた私を探す、＜鏡界＞の歌い手。他人の心の景色が視える特異な才能を持つ歌い手の物語。">
+    <link rel="icon" href="image/favicon.png" type="image/png">
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Google Fontsの読み込み -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Lato:wght@400;700&family=Yumincho&display=swap" rel="stylesheet">
     
-    <!-- カスタムCSS -->
+    <!-- Font Awesome for social icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Custom CSS -->
     <style>
-        /* フォント設定 */
+        /* 基本的なフォントと背景設定 */
+        html {
+            scroll-behavior: smooth;
+        }
         body {
             font-family: 'Lato', 'Yu Gothic', sans-serif;
             background-color: #0c142c; /* 深い青の背景 */
@@ -27,17 +52,15 @@
             font-family: 'Cormorant Garamond', serif;
         }
 
-        /* WebGLキャンバスのスタイル */
-        /* This is now handled by inline Tailwind classes on the canvas element */
-
         /* グラスモーフィズム効果 */
         .glassmorphism {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        /* スクロールアニメーション用 */
+        /* スクロールアニメーション */
         .fade-in {
             opacity: 0;
             transform: translateY(30px);
@@ -48,7 +71,7 @@
             transform: translateY(0);
         }
 
-        /* オーロラグラデーションテキスト */
+        /* オーロラ風グラデーションテキスト */
         .aurora-text {
             background: linear-gradient(90deg, #A78BFA, #60A5FA, #34D399);
             -webkit-background-clip: text;
@@ -81,7 +104,7 @@
                 0 0 20px #E5E7EB;
         }
 
-        /* Cyberpunk animation */
+        /* ヒーローセクションのアニメーション */
         .hero-element-hidden {
             opacity: 0;
         }
@@ -95,54 +118,54 @@
             animation: slowZoom 20s ease-in-out forwards;
         }
         @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         @keyframes slowZoom {
-            from {
-                transform: scale(1);
-            }
-            to {
-                transform: scale(1.1);
-            }
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
         }
         #blackout-overlay {
             transition: opacity 0.5s ease-out;
         }
+
+        /* ギャラリーモーダル */
+        .modal {
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal-content {
+            transition: transform 0.3s ease;
+        }
     </style>
 </head>
 <body class="text-gray-200">
+    <!-- ページの読み込み時のブラックアウトオーバーレイ -->
     <div id="blackout-overlay" class="fixed top-0 left-0 w-full h-full bg-black z-[9999]"></div>
 
     <!-- ヘッダー -->
     <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 glassmorphism">
         <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
             <div class="text-2xl font-cormorant font-bold tracking-wider">
-                <a href="#">
+                <a href="#" aria-label="ホームページへ戻る">
                     <span class="text-neon-cyan">Minamo</span>
                     <span class="text-neon-white"> - みなも</span>
                 </a>
             </div>
-            <!-- ナビゲーション -->
+            <!-- ナビゲーションメニュー -->
             <ul class="flex space-x-3 sm:space-x-6 items-center font-yumincho text-xs sm:text-base">
                 <li><a href="#narrative" class="hover:text-sky-300 transition-colors">物語</a></li>
                 <li><a href="#music" class="hover:text-sky-300 transition-colors">音楽</a></li>
                 <li><a href="#lyrics" class="hover:text-sky-300 transition-colors">詩</a></li>
                 <li><a href="#gallery" class="hover:text-sky-300 transition-colors">鏡像</a></li>
-                
+            </ul>
         </nav>
     </header>
 
     <main class="relative z-10">
         <!-- ヒーローセクション -->
         <section id="hero" class="h-screen flex flex-col justify-center items-center text-center text-white relative overflow-hidden">
-            <img id="hero-bg-image" src="image/minamo.png" alt="background" class="absolute inset-0 w-full h-full object-cover hero-element-hidden">
+            <!-- 背景画像 -->
+            <img id="hero-bg-image" src="image/minamo.png" alt="水面に立つみなも" class="absolute inset-0 w-full h-full object-cover hero-element-hidden">
             <div class="absolute inset-0 bg-black opacity-20"></div>
             <div class="relative z-10 p-4">
                 <h1 id="hero-title" class="text-4xl md:text-5xl font-yumincho mb-8 text-neon hero-element-hidden">
@@ -150,136 +173,161 @@
                 </h1>
                 <p id="hero-subtitle" class="text-3xl md:text-4xl font-cormorant font-bold text-neon hero-element-hidden">みなも - Minamo</p>
             </div>
+             <!-- スクロールダウンインジケーター -->
              <div class="absolute bottom-10 left-1/2 -translate-x-1/2">
-                <div class="w-6 h-10 border-2 border-white rounded-full flex justify-center items-start p-1">
-                    <div class="w-1 h-2 bg-white rounded-full animate-bounce"></div>
-                </div>
+                <a href="#content-wrapper" aria-label="コンテンツへスクロール">
+                    <div class="w-6 h-10 border-2 border-white rounded-full flex justify-center items-start p-1">
+                        <div class="w-1 h-2 bg-white rounded-full animate-bounce"></div>
+                    </div>
+                </a>
             </div>
         </section>
 
         <div id="content-wrapper" class="relative isolate">
-            <!-- WebGLによる水面エフェクトのキャンバス -->
+            <!-- Three.jsによる水面エフェクトのキャンバス -->
             <canvas id="webgl-canvas" class="absolute top-0 left-0 w-full h-full -z-10"></canvas>
 
-            <!-- ナラティブセクション -->
+            <!-- 物語セクション -->
             <section id="narrative" class="py-20 md:py-32">
-            <div class="container mx-auto px-6 space-y-24">
-                <!-- 第1部 -->
-                <div class="fade-in text-center max-w-3xl mx-auto">
-                    <h2 class="text-4xl font-yumincho mb-4 aurora-text">鏡としての覚醒</h2>
-                    <p class="text-lg leading-relaxed">
-                        生まれながらにして「鏡」だった。他人の心の景色が視えた。喜びは光の粒子として、悲しみは冷たい霧として。それは霊的共感覚（スピリチュアル・シナスタジア）とでも言うべき、特異な才能。世界は、無数の魂が発する信号で満ちていた。
-                    </p>
+                <div class="container mx-auto px-6 space-y-24">
+                    <div class="fade-in text-center max-w-3xl mx-auto">
+                        <h2 class="text-4xl font-yumincho mb-4 aurora-text">鏡としての覚醒</h2>
+                        <p class="text-lg leading-relaxed">
+                            生まれながらにして「鏡」だった。他人の心の景色が視えた。喜びは光の粒子として、悲しみは冷たい霧として。それは霊的共感覚（スピリチュアル・シナスタジア）とでも言うべき、特異な才能。世界は、無数の魂が発する信号で満ちていた。
+                        </p>
+                    </div>
+                    <div class="fade-in text-center max-w-3xl mx-auto">
+                        <h2 class="text-4xl font-yumincho mb-4 aurora-text">＜鏡界＞への沈潜</h2>
+                        <p class="text-lg leading-relaxed">
+                            眠りにつくと、意識は＜鏡界＞へと沈む。万人の夢と無意識が流れ着く、静かで広大な内なる海。「胡蝶の夢」のように、現実と夢の境界は曖昧になっていく。
+                        </p>
+                    </div>
+                    <div class="fade-in text-center max-w-3xl mx-auto">
+                        <h2 class="text-4xl font-yumincho mb-4 aurora-text">失われた源を探して</h2>
+                        <p class="text-lg leading-relaxed">
+                            あまりに多くの他者を映し続け、自分自身の「源」を見失った。自分の心が、何も映らない静まり返った水面のよう。歌だけが魂を照らす灯台なのだ。
+                        </p>
+                    </div>
                 </div>
-                <!-- 第2部 -->
-                <div class="fade-in text-center max-w-3xl mx-auto">
-                    <h2 class="text-4xl font-yumincho mb-4 aurora-text">＜鏡界＞への沈潜</h2>
-                    <p class="text-lg leading-relaxed">
-                        眠りにつくと、意識は＜鏡界＞へと沈む。万人の夢と無意識が流れ着く、静かで広大な内なる海。「胡蝶の夢」のように、現実と夢の境界は曖昧になっていく。
-                    </p>
-                </div>
-                <!-- 第3部 -->
-                <div class="fade-in text-center max-w-3xl mx-auto">
-                    <h2 class="text-4xl font-yumincho mb-4 aurora-text">失われた源を探して</h2>
-                    <p class="text-lg leading-relaxed">
-                        あまりに多くの他者を映し続け、自分自身の「源」を見失った。自分の心が、何も映らない静まり返った水面のよう。歌だけが魂を照らす灯台なのだ。
-                    </p>
-                </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- 音楽セクション -->
-        <section id="music" class="py-20 md:py-32 bg-black bg-opacity-20">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-5xl font-yumincho mb-12 aurora-text">音楽</h2>
-                <div class="fade-in max-w-4xl mx-auto p-8 rounded-2xl glassmorphism">
-                    <div class="flex flex-col md:flex-row items-center">
-                        <img src="image/minamo.png" alt="アルバムアート" class="w-48 h-48 md:w-64 md:h-64 rounded-full shadow-lg mb-8 md:mb-0 md:mr-12 object-cover">
-                        <div class="text-center md:text-left">
-                            <h3 class="text-4xl font-yumincho">＜鏡界＞</h3>
-                            <p class="text-sky-300 my-4">Music by Suno AI</p>
-                            <p class="mb-8">光と影の境界線で＜私＞を探しているすべての人に届け---みなも初の楽曲</p>
-                            <div class="mt-4 flex justify-center md:justify-start">
-                                <a href="https://suno.com/s/mDOtJw0k7WV5vsui" target="_blank" rel="noopener noreferrer" class="inline-block px-8 py-3 rounded-full border border-sky-300 text-sky-300 hover:bg-sky-300 hover:text-blue-900 transition-colors text-lg">
+            <!-- 音楽セクション -->
+            <section id="music" class="py-20 md:py-32 bg-black bg-opacity-20">
+                <div class="container mx-auto px-6 text-center">
+                    <h2 class="text-5xl font-yumincho mb-12 aurora-text">音楽</h2>
+                    <!-- 2カラムのグリッドレイアウト -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                        <!-- カード1: ＜鏡界＞ -->
+                        <div class="fade-in p-8 rounded-2xl glassmorphism h-full flex flex-col">
+                            <div class="flex-grow flex flex-col items-center text-center">
+                                <img src="image/minamo.png" alt="アルバムアート「鏡界」" class="w-48 h-48 rounded-full shadow-lg mb-8 object-cover">
+                                <h3 class="text-3xl font-yumincho">＜鏡界＞</h3>
+                                <p class="text-sky-300 my-4">Music by Suno AI</p>
+                                <p class="mb-8 flex-grow">光と影の境界線で<br>＜私＞を探しているあなたへ</p>
+                                <a href="https://suno.com/s/mDOtJw0k7WV5vsui" target="_blank" rel="noopener noreferrer" class="inline-block px-8 py-3 rounded-full border border-sky-300 text-sky-300 hover:bg-sky-300 hover:text-blue-900 transition-colors text-lg mt-auto" aria-label="Sunoで楽曲「鏡界」を聴く">
+                                    Listen on Suno
+                                </a>
+                            </div>
+                        </div>
+                        <!-- カード2: 春と修羅 -->
+                        <div class="fade-in p-8 rounded-2xl glassmorphism h-full flex flex-col">
+                            <div class="flex-grow flex flex-col items-center text-center">
+                                <img src="image/春と修羅アイコン.png" alt="アルバムアート「春と修羅」" class="w-48 h-48 rounded-full shadow-lg mb-8 object-cover">
+                                <h3 class="text-3xl font-yumincho">春と修羅</h3>
+                                <p class="text-sky-300 my-4">Music by Suno AI</p>
+                                <p class="mb-8 flex-grow">私たちは有機交流電燈の<br>ひとつの青い照明</p>
+                                <a href="https://suno.com/s/wCT7BPgbQ8xc7dLH" target="_blank" rel="noopener noreferrer" class="inline-block px-8 py-3 rounded-full border border-sky-300 text-sky-300 hover:bg-sky-300 hover:text-blue-900 transition-colors text-lg mt-auto" aria-label="Sunoで楽曲「春と修羅」を聴く">
                                     Listen on Suno
                                 </a>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-        
-        <!-- 詩セクション -->
-        <section id="lyrics" class="py-20 md:py-32">
-            <div class="container mx-auto px-6">
-                <h2 class="text-5xl font-yumincho text-center mb-12 aurora-text">詩</h2>
-                <div class="fade-in max-w-3xl mx-auto p-8 md:p-12 rounded-2xl glassmorphism">
-                    <div class="text-center text-lg leading-loose font-yumincho">
-                        <p class="mb-6">鏡に映る顔を見つめて<br>昨日の影が揺れている<br>指先で触れた水面に<br>私の輪郭が溶けていく</p>
-                        <p class="mb-6">千の破片に砕けた記憶<br>どれが本当の姿なのか<br>光と影の境界線で<br>私は私を探している</p>
-                        <p class="mb-6">流れる時の中で<br>形を変えていく<br>答えはどこにある</p>
-                        <p class="mb-6">鏡よ鏡よ教えておくれ<br>映し出される無数の私<br>全てであり何でもない<br>境界線の向こう側へ</p>
-                        <p class="mb-6">蝶の羽ばたく夢を見た<br>目覚めても消えない残像<br>現実という名の幻に<br>私は私を重ねてる</p>
-                        <p class="mb-6">溶けて流れて<br>また形作る<br>永遠の変化<br>それが私</p>
-                        <p class="mb-6">鏡よ鏡よ見せておくれ<br>統べてを映す透明な眼<br>固まることのない水<br>無限に広がる私へ</p>
-                        <p>鏡の中で<br>鏡の外で<br>私は在る</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ギャラリーセクション -->
-        <section id="gallery" class="py-20 md:py-32">
-            <div class="container mx-auto px-6">
-                <h2 class="text-5xl font-yumincho text-center mb-12 aurora-text">鏡像</h2>
-                <div class="fade-in grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="group relative overflow-hidden rounded-lg">
-                        <img src="https://placehold.co/600x800/1E3A8A/F8FAFC?text=Minamo+1" alt="コンセプトアート1" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity duration-500 flex items-center justify-center">
-                            <p class="text-white text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500">鏡界の姿</p>
-                        </div>
-                    </div>
-                    <div class="group relative overflow-hidden rounded-lg">
-                        <img src="https://placehold.co/600x800/0EA5E9/F8FAFC?text=Minamo+2" alt="コンセプトアート2" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
-                         <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity duration-500 flex items-center justify-center">
-                            <p class="text-white text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500">水面の歌</p>
-                        </div>
-                    </div>
-                    <div class="group relative overflow-hidden rounded-lg">
-                        <img src="https://placehold.co/600x800/A78BFA/F8FAFC?text=Minamo+3" alt="コンセプトアート3" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
-                         <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity duration-500 flex items-center justify-center">
-                            <p class="text-white text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500">感情の光</p>
-                        </div>
-                    </div>
-                    <div class="group relative overflow-hidden rounded-lg">
-                        <img src="https://placehold.co/600x800/FEF3C7/1E3A8A?text=Minamo+4" alt="コンセプトアート4" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
-                         <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity duration-500 flex items-center justify-center">
-                            <p class="text-white text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500">失われた源</p>
+            </section>
+            
+            <!-- 詩セクション -->
+            <section id="lyrics" class="py-20 md:py-32">
+                <div class="container mx-auto px-6">
+                    <h2 class="text-5xl font-yumincho text-center mb-12 aurora-text">詩</h2>
+                    <div class="fade-in max-w-3xl mx-auto p-8 md:p-12 rounded-2xl glassmorphism">
+                        <div class="text-center text-lg leading-loose font-yumincho"><h3>＜鏡界＞</h3>
+                            <p class="mb-6">鏡に映る顔を見つめて<br>昨日の影が揺れている<br>指先で触れた水面に<br>私の輪郭が溶けていく</p>
+                            <p class="mb-6">千の破片に砕けた記憶<br>どれが本当の姿なのか<br>光と影の境界線で<br>私は私を探している</p>
+                            <p class="mb-6">流れる時の中で<br>形を変えていく<br>答えはどこにある</p>
+                            <p class="mb-6">鏡よ鏡よ教えておくれ<br>映し出される無数の私<br>全てであり何でもない<br>境界線の向こう側へ</p>
+                            <p class="mb-6">蝶の羽ばたく夢を見た<br>目覚めても消えない残像<br>現実という名の幻に<br>私は私を重ねてる</p>
+                            <p class="mb-6">溶けて流れて<br>また形作る<br>永遠の変化<br>それが私</p>
+                            <p class="mb-6">鏡よ鏡よ見せておくれ<br>統べてを映す透明な眼<br>固まることのない水<br>無限に広がる私へ</p>
+                            <p>鏡の中で<br>鏡の外で<br>私は在る</p>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
+            <!-- ギャラリーセクション -->
+            <section id="gallery" class="py-20 md:py-32">
+                <div class="container mx-auto px-6">
+                    <h2 class="text-5xl font-yumincho text-center mb-12 aurora-text">鏡像</h2>
+                    <div class="fade-in grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <!-- 画像をクリックするとモーダルで拡大表示 -->
+                        <div class="group relative overflow-hidden rounded-lg cursor-pointer" data-src="image/鏡界の姿.png" data-title="鏡界の姿">
+                            <img src="image/鏡界の姿.png" alt="コンセプトアート「鏡界の姿」" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity duration-500 flex items-center justify-center">
+                                <p class="text-white text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500">鏡界の姿</p>
+                            </div>
+                        </div>
+                        <div class="group relative overflow-hidden rounded-lg cursor-pointer" data-src="image/水面の歌1.png" data-title="水面の歌">
+                            <img src="image/水面の歌1.png" alt="コンセプトアート「水面の歌」" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity duration-500 flex items-center justify-center">
+                                <p class="text-white text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500">水面の歌</p>
+                            </div>
+                        </div>
+                        <div class="group relative overflow-hidden rounded-lg cursor-pointer" data-src="image/感情の光2.png" data-title="感情の光">
+                            <img src="image/感情の光2.png" alt="コンセプトアート「感情の光」" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity duration-500 flex items-center justify-center">
+                                <p class="text-white text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500">感情の光</p>
+                            </div>
+                        </div>
+                        <div class="group relative overflow-hidden rounded-lg cursor-pointer" data-src="image/取り戻された源.png" data-title="取り戻された源">
+                            <img src="image/取り戻された源.png" alt="コンセプトアート「取り戻された源」" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity duration-500 flex items-center justify-center">
+                                <p class="text-white text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500">取り戻された源</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div> <!-- End of content-wrapper -->
-
     </main>
 
     <!-- フッター -->
     <footer class="py-12 bg-gradient-to-t from-[#060b1b] to-[#0c142c]">
         <div class="container mx-auto px-6 text-center text-gray-400">
-            
+            <!-- SNSリンク -->
+            <div class="flex justify-center space-x-6 mb-8">
+                <a href="#" target="_blank" rel="noopener noreferrer" class="text-2xl hover:text-sky-300 transition-colors" aria-label="X (旧Twitter) を開く"><i class="fab fa-x-twitter"></i></a>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="text-2xl hover:text-sky-300 transition-colors" aria-label="YouTube を開く"><i class="fab fa-youtube"></i></a>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="text-2xl hover:text-sky-300 transition-colors" aria-label="Instagram を開く"><i class="fab fa-instagram"></i></a>
+            </div>
             <p>&copy; 2025 Minamo Project. All Rights Reserved.</p>
         </div>
     </footer>
 
-    <!-- Three.jsの読み込み -->
+    <!-- ギャラリーモーダル -->
+    <div id="gallery-modal" class="modal fixed inset-0 bg-black bg-opacity-80 z-[100] flex items-center justify-center opacity-0 invisible" aria-hidden="true" role="dialog">
+        <div class="relative p-4">
+            <button id="modal-close" class="absolute -top-2 -right-2 md:top-0 md:right-0 text-white text-4xl bg-gray-800 rounded-full w-10 h-10 flex items-center justify-center hover:bg-gray-700 transition-colors" aria-label="モーダルを閉じる">&times;</button>
+            <img id="modal-image" src="" alt="" class="max-w-[80vw] max-h-[80vh] rounded-lg shadow-2xl modal-content scale-90">
+            <p id="modal-caption" class="text-center text-white mt-4 text-lg font-yumincho"></p>
+        </div>
+    </div>
+
+    <!-- Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- Blackout Overlay ---
+            // --- ページの読み込みアニメーション ---
             const overlay = document.getElementById('blackout-overlay');
             setTimeout(() => {
                 overlay.style.opacity = '0';
@@ -287,8 +335,8 @@
                     if (overlay) {
                         overlay.style.display = 'none';
                     }
-                }, 500); // Match CSS transition duration
-            }, 250); // Blackout for 0.25s
+                }, 500); // CSSのtransition時間と合わせる
+            }, 250);
 
             // --- Three.js 水面エフェクト ---
             let scene, camera, renderer, waterMesh, clock;
@@ -356,7 +404,7 @@
                 scene.add(waterMesh);
 
                 window.addEventListener('resize', onWindowResize, false);
-                container.addEventListener('mousemove', onMouseMove, false); // Attach to container
+                container.addEventListener('mousemove', onMouseMove, false);
 
                 animate();
             }
@@ -370,8 +418,9 @@
             }
 
             function onMouseMove(event) {
-                targetMouse.x = event.clientX / window.innerWidth;
-                targetMouse.y = event.clientY / window.innerHeight;
+                const rect = event.currentTarget.getBoundingClientRect();
+                targetMouse.x = (event.clientX - rect.left) / rect.width;
+                targetMouse.y = (event.clientY - rect.top) / rect.height;
             }
 
             function animate() {
@@ -386,7 +435,7 @@
             
             initWebGL();
 
-            // --- スクロールアニメーション ---
+            // --- スクロールフェードインアニメーション ---
             const faders = document.querySelectorAll('.fade-in');
             const appearOptions = {
                 threshold: 0.2,
@@ -413,7 +462,7 @@
                 }
             });
 
-            // --- Hero Animation ---
+            // --- ヒーローセクションのアニメーション ---
             const heroTitle = document.getElementById('hero-title');
             const heroSubtitle = document.getElementById('hero-subtitle');
             const heroBgImage = document.getElementById('hero-bg-image');
@@ -421,7 +470,7 @@
             setTimeout(() => {
                 heroTitle.classList.add('title-reveal');
                 heroTitle.classList.remove('hero-element-hidden');
-            }, 750); // Start after blackout + fade
+            }, 750);
             
             setTimeout(() => {
                 heroSubtitle.classList.add('title-reveal');
@@ -431,12 +480,58 @@
             setTimeout(() => {
                 heroBgImage.classList.remove('hero-element-hidden');
                 heroBgImage.classList.add('opacity-[0.55]');
-                
-                // Start zoom after fade-in is complete
                 setTimeout(() => {
                     heroBgImage.classList.add('bg-slow-zoom');
-                }, 1500); // Corresponds to the CSS transition duration
+                }, 1500);
             }, 1350);
+
+            // --- ギャラリーモーダル機能 ---
+            const modal = document.getElementById('gallery-modal');
+            const modalImage = document.getElementById('modal-image');
+            const modalCaption = document.getElementById('modal-caption');
+            const modalCloseBtn = document.getElementById('modal-close');
+            const galleryItems = document.querySelectorAll('#gallery [data-src]');
+
+            function openModal(src, title) {
+                modalImage.src = src;
+                modalImage.alt = title;
+                modalCaption.textContent = title;
+                modal.classList.remove('opacity-0', 'invisible');
+                modal.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden'; // 背景のスクロールを禁止
+            }
+
+            function closeModal() {
+                modal.classList.add('opacity-0');
+                setTimeout(() => {
+                    modal.classList.add('invisible');
+                    modal.setAttribute('aria-hidden', 'true');
+                    modalImage.src = ""; // 画像の読み込みを停止
+                    document.body.style.overflow = '';
+                }, 300); // CSSのtransition時間と合わせる
+            }
+
+            galleryItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const src = item.getAttribute('data-src');
+                    const title = item.getAttribute('data-title');
+                    openModal(src, title);
+                });
+            });
+
+            modalCloseBtn.addEventListener('click', closeModal);
+            // モーダルの背景クリックでも閉じる
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+            // Escapeキーで閉じる
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !modal.classList.contains('invisible')) {
+                    closeModal();
+                }
+            });
         });
     </script>
 </body>
